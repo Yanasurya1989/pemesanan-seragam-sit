@@ -33,12 +33,26 @@
                         <div class="card-body text-center d-flex flex-column">
                             <h5 class="card-title">{{ $p->nama_seragam }}</h5>
                             <p class="text-muted mb-1">Ukuran: {{ strtoupper($p->size) }}</p>
-                            <p class="fw-bold text-success mb-3">Rp {{ number_format($p->harga, 0, ',', '.') }}</p>
+                            <p class="fw-bold text-success mb-1">Rp {{ number_format($p->harga, 0, ',', '.') }}</p>
+                            <p class="text-muted mb-3">Stok:
+                                @if ($p->stok > 0)
+                                    <span class="text-success fw-bold">{{ $p->stok }}</span>
+                                @else
+                                    <span class="text-danger fw-bold">Habis</span>
+                                @endif
+                            </p>
 
-                            <a href="{{ route('checkout.create', ['product_id' => $p->id]) }}"
-                                class="btn btn-primary mt-auto">
-                                🛒 Pesan Sekarang
-                            </a>
+                            {{-- Tombol Pesan --}}
+                            @if ($p->stok > 0)
+                                <a href="{{ route('checkout.create', ['product_id' => $p->id]) }}"
+                                    class="btn btn-primary mt-auto">
+                                    🛒 Pesan Sekarang
+                                </a>
+                            @else
+                                <button class="btn btn-secondary mt-auto" disabled>
+                                    🚫 Stok Habis
+                                </button>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -29,6 +29,10 @@
             <input type="number" name="harga" value="{{ old('harga') }}" class="form-control" required>
         </div>
         <div class="mb-3">
+            <label>Stok</label>
+            <input type="number" name="stok" value="{{ old('stok') }}" class="form-control" min="0" required>
+        </div>
+        <div class="mb-3">
             <label>Gambar</label>
             <input type="file" name="gambar" class="form-control">
         </div>

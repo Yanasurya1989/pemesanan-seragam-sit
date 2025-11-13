@@ -24,16 +24,16 @@ class ProductController extends Controller
         $request->validate([
             'nama_seragam' => 'required|string|max:255',
             'size' => 'required|string|max:20',
-            'harga' => 'required|numeric',
+            'harga' => 'required|numeric|min:0',
+            'stok' => 'required|integer|min:0',
             'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $data = $request->only(['nama_seragam', 'size', 'harga']);
+        $data = $request->only(['nama_seragam', 'size', 'harga', 'stok']);
 
         if ($request->hasFile('gambar')) {
-            // menyimpan ke storage/app/public/products
             $path = $request->file('gambar')->store('products', 'public');
-            $data['gambar'] = $path; // simpan path relatif: products/xxxxx.jpg
+            $data['gambar'] = $path;
         }
 
         Product::create($data);
@@ -51,14 +51,14 @@ class ProductController extends Controller
         $request->validate([
             'nama_seragam' => 'required|string|max:255',
             'size' => 'required|string|max:20',
-            'harga' => 'required|numeric',
+            'harga' => 'required|numeric|min:0',
+            'stok' => 'required|integer|min:0',
             'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $data = $request->only(['nama_seragam', 'size', 'harga']);
+        $data = $request->only(['nama_seragam', 'size', 'harga', 'stok']);
 
         if ($request->hasFile('gambar')) {
-            // hapus gambar lama bila ada
             if ($product->gambar && Storage::disk('public')->exists($product->gambar)) {
                 Storage::disk('public')->delete($product->gambar);
             }
@@ -73,7 +73,6 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        // hapus file gambar jika ada
         if ($product->gambar && Storage::disk('public')->exists($product->gambar)) {
             Storage::disk('public')->delete($product->gambar);
         }

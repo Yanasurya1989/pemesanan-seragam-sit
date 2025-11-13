@@ -54,6 +54,7 @@
                                     <span class="badge bg-secondary">Belum</span>
                                 @endif
                             </td>
+
                             <td>
                                 {{-- Tombol toggle Lunas --}}
                                 <form action="{{ route('orders.togglePaid', $order->id) }}" method="POST" class="d-inline">
@@ -76,7 +77,6 @@
 
                                 {{-- Tombol WhatsApp --}}
                                 @php
-                                    // Format nomor: hilangkan 0 di depan dan tambahkan kode negara +62
                                     $nomor_wa = preg_replace('/^0/', '62', $order->no_hp);
                                     $pesan = urlencode(
                                         "Halo {$order->nama_pemesan}, pesanan seragam Anda sudah siap diambil di sekolah. Terima kasih 🙏",
@@ -86,6 +86,14 @@
                                 <a href="{{ $link_wa }}" target="_blank" class="btn btn-sm btn-success mt-1">
                                     <i class="bi bi-whatsapp"></i> Chat
                                 </a>
+
+                                {{-- Tombol Hapus --}}
+                                <form action="{{ route('orders.destroy', $order->id) }}" method="POST" class="d-inline"
+                                    onsubmit="return confirm('Yakin ingin menghapus pesanan ini? Stok akan dikembalikan.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-sm btn-outline-danger mt-1">🗑 Hapus</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach

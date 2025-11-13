@@ -19,6 +19,7 @@ class CheckoutController extends Controller
     {
         $request->validate([
             'nama_pemesan' => 'required|string|max:255',
+            'kelas' => 'required|string|max:100',
             'no_hp' => 'required|string|max:20',
             'alamat' => 'required|string',
             'product_id' => 'required|array',
@@ -27,9 +28,12 @@ class CheckoutController extends Controller
 
         $order = Order::create([
             'nama_pemesan' => $request->nama_pemesan,
+            'kelas' => $request->kelas,
             'no_hp' => $request->no_hp,
             'alamat' => $request->alamat,
             'total_harga' => 0,
+            'is_paid' => false,
+            'is_received' => false,
         ]);
 
         $total = 0;
@@ -37,9 +41,16 @@ class CheckoutController extends Controller
         foreach ($request->product_id as $i => $productId) {
             $product = Product::findOrFail($productId);
             $qty = (int)$request->qty[$i];
+
+            // 🔒 Cek stok dulu
+            if ($product->stok < $qty) {
+                return back()->with('error', "Stok {$product->nama_seragam} tidak mencukupi! (tersisa {$product->stok})");
+            }
+
             $subtotal = $product->harga * $qty;
             $total += $subtotal;
 
+            // 🧾 Simpan item pesanan
             OrderItem::create([
                 'order_id' => $order->id,
                 'product_id' => $product->id,
@@ -47,12 +58,18 @@ class CheckoutController extends Controller
                 'harga_satuan' => $product->harga,
                 'subtotal' => $subtotal,
             ]);
+
+            // 📉 Kurangi stok
+            $product->decrement('stok', $qty);
         }
 
+        // 💰 Update total harga
         $order->update(['total_harga' => $total]);
 
-        return redirect()->route('checkout.success', ['order' => $order->id]);
+        return redirect()->route('checkout.success', ['order' => $order->id])
+            ->with('success', 'Pesanan berhasil dibuat!');
     }
+
 
     public function success(Order $order)
     {

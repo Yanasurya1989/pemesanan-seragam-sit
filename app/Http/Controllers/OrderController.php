@@ -24,4 +24,17 @@ class OrderController extends Controller
         $order->update(['is_received' => !$order->is_received]);
         return redirect()->route('orders.index')->with('success', 'Status penerimaan diperbarui!');
     }
+
+    public function destroy(Order $order)
+    {
+        // Kembalikan stok produk
+        foreach ($order->items as $item) {
+            $item->product->increment('stok', $item->qty);
+        }
+
+        // Hapus pesanan
+        $order->delete();
+
+        return redirect()->route('orders.index')->with('success', 'Pesanan berhasil dihapus dan stok dikembalikan.');
+    }
 }

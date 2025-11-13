@@ -11,13 +11,14 @@ class Order extends Model
 
     protected $fillable = [
         'nama_pemesan',
+        'kelas',
         'no_hp',
         'alamat',
-        'kelas',
         'total_harga',
         'is_paid',
-        'is_received'
+        'is_received',
     ];
+
 
     public function items()
     {

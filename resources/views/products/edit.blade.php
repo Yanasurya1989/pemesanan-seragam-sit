@@ -30,6 +30,11 @@
             <input type="number" name="harga" value="{{ old('harga', $product->harga) }}" class="form-control" required>
         </div>
         <div class="mb-3">
+            <label>Stok</label>
+            <input type="number" name="stok" value="{{ old('stok', $product->stok) }}" class="form-control"
+                min="0" required>
+        </div>
+        <div class="mb-3">
             <label>Gambar (biarkan kosong jika tidak ganti)</label><br>
             @if ($product->gambar)
                 <img src="{{ Storage::url($product->gambar) }}" width="100" class="mb-2"><br>

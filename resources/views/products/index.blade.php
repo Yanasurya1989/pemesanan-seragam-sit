@@ -10,6 +10,7 @@
                 <th>Nama</th>
                 <th>Size</th>
                 <th>Harga</th>
+                <th>Stok</th>
                 <th>Gambar</th>
                 <th>Aksi</th>
             </tr>
@@ -21,6 +22,13 @@
                     <td>{{ $p->size }}</td>
                     <td>Rp {{ number_format($p->harga, 0, ',', '.') }}</td>
                     <td>
+                        @if ($p->stok > 0)
+                            <span class="badge bg-success">{{ $p->stok }}</span>
+                        @else
+                            <span class="badge bg-danger">Habis</span>
+                        @endif
+                    </td>
+                    <td>
                         @if ($p->gambar)
                             <img src="{{ Storage::url($p->gambar) }}" width="100" alt="Gambar">
                         @else
@@ -29,7 +37,6 @@
                     </td>
                     <td>
                         <a href="{{ route('products.edit', $p->id) }}" class="btn btn-warning btn-sm">Edit</a>
-
                         <form action="{{ route('products.destroy', $p->id) }}" method="POST" style="display:inline;">
                             @csrf @method('DELETE')
                             <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?')">Hapus</button>

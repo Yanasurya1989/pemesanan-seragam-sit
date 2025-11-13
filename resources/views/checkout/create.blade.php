@@ -41,6 +41,11 @@
 
                         <div class="mb-3">
                             <label>Kelas</label>
+                            <input type="text" name="kelas" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Kelas</label>
                             <input type="text" name="kelas" class="form-control" placeholder="Contoh: 9A" required>
                         </div>
 

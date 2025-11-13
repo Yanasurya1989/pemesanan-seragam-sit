@@ -14,5 +14,6 @@ class Product extends Model
         'size',
         'harga',
         'gambar',
+        'stok'
     ];
 }
