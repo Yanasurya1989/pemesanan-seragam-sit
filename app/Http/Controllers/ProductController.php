@@ -14,17 +14,10 @@ class ProductController extends Controller
         return view('products.index', compact('products'));
     }
 
-    // public function create()
-    // {
-    //     return view('products.create');
-    // }
-
-    public function create($product_id)
+    public function create()
     {
-        $product = \App\Models\Product::findOrFail($product_id);
-        return view('checkout.create', compact('product'));
+        return view('products.create');
     }
-
 
     public function store(Request $request)
     {
