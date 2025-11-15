@@ -13,6 +13,7 @@
                 <thead class="table-success">
                     <tr>
                         <th>No</th>
+                        <th>Tanggal Order</th>
                         <th>Nama Pemesan</th>
                         <th>Kelas</th>
                         <th>No HP</th>
@@ -28,10 +29,14 @@
                     @foreach ($orders as $index => $order)
                         <tr>
                             <td>{{ $index + 1 }}</td>
+
+                            <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
+
                             <td>{{ $order->nama_pemesan }}</td>
                             <td>{{ $order->kelas }}</td>
                             <td>{{ $order->no_hp }}</td>
                             <td>{{ $order->alamat }}</td>
+
                             <td>
                                 @foreach ($order->items as $item)
                                     <div>
@@ -39,25 +44,38 @@
                                     </div>
                                 @endforeach
                             </td>
+
                             <td>Rp {{ number_format($order->total_harga, 0, ',', '.') }}</td>
+
+                            {{-- Status Pembayaran --}}
                             <td>
                                 @if ($order->is_paid)
-                                    <span class="badge bg-success">Lunas</span>
+                                    <span class="badge bg-success">Lunas</span><br>
+                                    <small class="text-muted">
+                                        ({{ $order->paid_at ? $order->paid_at->format('d/m/Y H:i') : '-' }})
+                                    </small>
                                 @else
                                     <span class="badge bg-danger">Belum</span>
                                 @endif
                             </td>
+
+                            {{-- Status Penerimaan --}}
                             <td>
                                 @if ($order->is_received)
-                                    <span class="badge bg-primary">Diterima</span>
+                                    <span class="badge bg-primary">Diterima</span><br>
+                                    <small class="text-muted">
+                                        ({{ $order->received_at ? $order->received_at->format('d/m/Y H:i') : '-' }})
+                                    </small>
                                 @else
                                     <span class="badge bg-secondary">Belum</span>
                                 @endif
                             </td>
 
+                            {{-- Aksi --}}
                             <td>
                                 {{-- Tombol toggle Lunas --}}
-                                <form action="{{ route('orders.togglePaid', $order->id) }}" method="POST" class="d-inline">
+                                <form action="{{ route('orders.togglePaid', $order->id) }}" method="POST"
+                                    class="d-inline">
                                     @csrf
                                     @method('PATCH')
                                     <button class="btn btn-sm {{ $order->is_paid ? 'btn-warning' : 'btn-success' }}">
@@ -67,7 +85,7 @@
 
                                 {{-- Tombol toggle Diterima --}}
                                 <form action="{{ route('orders.toggleReceived', $order->id) }}" method="POST"
-                                    class="d-inline">
+                                    class="d-inline mt-1">
                                     @csrf
                                     @method('PATCH')
                                     <button class="btn btn-sm {{ $order->is_received ? 'btn-danger' : 'btn-info' }}">
@@ -83,6 +101,7 @@
                                     );
                                     $link_wa = "https://wa.me/{$nomor_wa}?text={$pesan}";
                                 @endphp
+
                                 <a href="{{ $link_wa }}" target="_blank" class="btn btn-sm btn-success mt-1">
                                     <i class="bi bi-whatsapp"></i> Chat
                                 </a>
