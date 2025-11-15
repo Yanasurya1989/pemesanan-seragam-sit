@@ -22,3 +22,5 @@ Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::patch('/orders/{order}/toggle-paid', [OrderController::class, 'togglePaid'])->name('orders.togglePaid');
 Route::patch('/orders/{order}/toggle-received', [OrderController::class, 'toggleReceived'])->name('orders.toggleReceived');
 Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+
+// Route::get('/produk', [ProductController::class, 'frontend'])->name('frontend.products');

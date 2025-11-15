@@ -81,9 +81,15 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus!');
     }
 
-    public function frontend()
+    public function frontend(Request $request)
     {
-        $products = Product::latest()->get();
+        $search = $request->search;
+
+        $products = Product::when($search, function ($query) use ($search) {
+            $query->where('nama_seragam', 'like', "%{$search}%")
+                ->orWhere('size', 'like', "%{$search}%");
+        })->latest()->get();
+
         return view('frontend.products', compact('products'));
     }
 }

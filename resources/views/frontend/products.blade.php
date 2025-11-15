@@ -9,6 +9,15 @@
             <p class="text-muted">Temukan berbagai jenis seragam dengan kualitas terbaik dan harga terjangkau.</p>
         </div>
 
+        {{-- Search --}}
+        <form action="{{ route('frontend.products') }}" method="GET" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="search" value="{{ request('search') }}" class="form-control"
+                    placeholder="Cari seragam atau ukuran...">
+                <button class="btn btn-primary">Cari</button>
+            </div>
+        </form>
+
         {{-- Notifikasi --}}
         @if (session('success'))
             <div class="alert alert-success text-center">

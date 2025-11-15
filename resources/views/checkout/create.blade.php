@@ -39,10 +39,10 @@
                             <input type="text" name="nama_pemesan" class="form-control" required>
                         </div>
 
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label>Kelas</label>
                             <input type="text" name="kelas" class="form-control" required>
-                        </div>
+                        </div> --}}
 
                         <div class="mb-3">
                             <label>Kelas</label>

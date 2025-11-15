@@ -26,16 +26,15 @@
         <h5>💳 Silakan Transfer Pembayaran</h5>
         <p>Harap lakukan pembayaran ke salah satu rekening berikut:</p>
         <ul>
-            <li><b>Bank BCA:</b> 1234567890 a.n. PT Qordova Fashion</li>
-            <li><b>Bank Mandiri:</b> 9876543210 a.n. PT Qordova Fashion</li>
+            <li><b>Bank BSI:</b> 1234567890 a.n. Annisah Safitri</li>
+            <li><b>Bank Mandiri:</b> 9876543210 a.n. Annisa Safitri</li>
         </ul>
 
         <p>Atau gunakan <b>QRIS</b> berikut untuk pembayaran cepat:</p>
         <img src="{{ asset('images/qris.png') }}" alt="QRIS Pembayaran" width="200" class="mb-3">
 
         @php
-            // Ubah ke nomor WA admin kamu (gunakan format internasional tanpa +)
-            $adminPhone = '6289601353957';
+            $adminPhone = '6282218311045';
 
             $waMessage =
                 "Halo Admin, saya ingin konfirmasi pesanan:\n\n" .
