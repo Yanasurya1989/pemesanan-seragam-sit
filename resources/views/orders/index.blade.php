@@ -21,19 +21,28 @@
                     <input type="date" name="to" class="form-control" value="{{ request('to') }}">
                 </div>
 
-                <div class="col-md-4 d-flex align-items-end gap-2">
+                {{-- Search Nama --}}
+                <div class="col-md-4">
+                    <label>Cari Nama Pemesan</label>
+                    <input type="text" name="nama" class="form-control" placeholder="Masukkan nama..."
+                        value="{{ request('nama') }}">
+                </div>
+
+                <div class="col-md-12 d-flex align-items-end gap-2">
 
                     <button class="btn btn-primary w-100">🔍 Filter</button>
 
                     <a href="{{ route('orders.index') }}" class="btn btn-secondary w-100">Reset</a>
 
-                    <a href="{{ route('orders.export', request()->only('from', 'to')) }}" class="btn btn-success w-100">
-                        📥 Export Excel
+                    <a href="{{ route('orders.export', request()->only('from', 'to', 'nama')) }}"
+                        class="btn btn-success w-100">
+                        📥 Export
                     </a>
 
                 </div>
             </form>
         </div>
+
 
         <div class="table-responsive">
             <table class="table table-bordered align-middle text-center">
@@ -57,7 +66,7 @@
                         <tr>
                             <td>{{ $index + 1 }}</td>
 
-                            <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
+                            <td>{{ $order->created_at->locale('id')->translatedFormat('d/m/Y H:i') }}</td>
 
                             <td>{{ $order->nama_pemesan }}</td>
                             <td>{{ $order->kelas }}</td>
@@ -79,7 +88,7 @@
                                 @if ($order->is_paid)
                                     <span class="badge bg-success">Lunas</span><br>
                                     <small class="text-muted">
-                                        ({{ $order->paid_at ? $order->paid_at->format('d/m/Y H:i') : '-' }})
+                                        ({{ $order->paid_at ? $order->paid_at->locale('id')->translatedFormat('d/m/Y H:i') : '-' }})
                                     </small>
                                 @else
                                     <span class="badge bg-danger">Belum</span>
@@ -91,7 +100,7 @@
                                 @if ($order->is_received)
                                     <span class="badge bg-primary">Diterima</span><br>
                                     <small class="text-muted">
-                                        ({{ $order->received_at ? $order->received_at->format('d/m/Y H:i') : '-' }})
+                                        ({{ $order->received_at ? $order->received_at->locale('id')->translatedFormat('d/m/Y H:i') : '-' }})
                                     </small>
                                 @else
                                     <span class="badge bg-secondary">Belum</span>
@@ -102,7 +111,7 @@
                             <td style="min-width: 150px;">
                                 <div class="d-grid gap-2">
 
-                                    {{-- Tombol toggle Lunas --}}
+                                    {{-- Toggle Lunas --}}
                                     <form action="{{ route('orders.togglePaid', $order->id) }}" method="POST">
                                         @csrf
                                         @method('PATCH')
@@ -112,7 +121,7 @@
                                         </button>
                                     </form>
 
-                                    {{-- Tombol toggle Diterima --}}
+                                    {{-- Toggle Diterima --}}
                                     <form action="{{ route('orders.toggleReceived', $order->id) }}" method="POST">
                                         @csrf
                                         @method('PATCH')
@@ -122,7 +131,7 @@
                                         </button>
                                     </form>
 
-                                    {{-- Tombol WhatsApp --}}
+                                    {{-- WhatsApp --}}
                                     @php
                                         $nomor_wa = preg_replace('/^0/', '62', $order->no_hp);
                                         $pesan = urlencode(
@@ -135,7 +144,7 @@
                                         <i class="bi bi-whatsapp"></i> Chat
                                     </a>
 
-                                    {{-- Tombol Hapus --}}
+                                    {{-- Hapus --}}
                                     <form action="{{ route('orders.destroy', $order->id) }}" method="POST"
                                         onsubmit="return confirm('Yakin ingin menghapus pesanan ini? Stok akan dikembalikan.');">
                                         @csrf

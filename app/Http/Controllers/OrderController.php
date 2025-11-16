@@ -21,6 +21,10 @@ class OrderController extends Controller
             $orders->whereDate('created_at', '<=', $request->to);
         }
 
+        if ($request->nama) {
+            $orders->where('nama_pemesan', 'like', '%' . $request->nama . '%');
+        }
+
         $orders = $orders->get();
 
         return view('orders.index', compact('orders'));
@@ -57,6 +61,6 @@ class OrderController extends Controller
 
     public function export(Request $request)
     {
-        return Excel::download(new OrderExport, 'orders.xlsx');
+        return Excel::download(new OrderExport($request), 'orders.xlsx');
     }
 }

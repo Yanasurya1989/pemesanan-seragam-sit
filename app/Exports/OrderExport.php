@@ -5,49 +5,72 @@ namespace App\Exports;
 use App\Models\Order;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Illuminate\Support\Facades\Request;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Illuminate\Http\Request;
 
-class OrderExport implements FromCollection, WithHeadings
+class OrderExport implements FromCollection, WithHeadings, WithMapping
 {
+    protected $request;
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
     public function collection()
     {
-        $query = Order::with('items.product')->orderBy('created_at', 'DESC');
+        $orders = Order::with('items.product')->latest();
 
-        if (request('from')) {
-            $query->whereDate('created_at', '>=', request('from'));
+        if ($this->request->from) {
+            $orders->whereDate('created_at', '>=', $this->request->from);
         }
 
-        if (request('to')) {
-            $query->whereDate('created_at', '<=', request('to'));
+        if ($this->request->to) {
+            $orders->whereDate('created_at', '<=', $this->request->to);
         }
 
-        return $query->get()->map(function ($order) {
-            return [
-                'Tanggal' => $order->created_at->format('d/m/Y H:i'),
-                'Nama Pemesan' => $order->nama_pemesan,
-                'Kelas' => $order->kelas,
-                'No HP' => $order->no_hp,
-                'Alamat' => $order->alamat,
-                'Produk' => $order->items->map(fn($i) => $i->product->nama_seragam . " ({$i->qty}x)")->implode(', '),
-                'Total Harga' => $order->total_harga,
-                'Pembayaran' => $order->is_paid ? 'Lunas' : 'Belum',
-                'Penerimaan' => $order->is_received ? 'Sudah' : 'Belum',
-            ];
-        });
+        if ($this->request->nama) {
+            $orders->where('nama_pemesan', 'like', '%' . $this->request->nama . '%');
+        }
+
+        return $orders->get();
     }
 
     public function headings(): array
     {
         return [
-            'Tanggal',
+            'Tanggal Order',
             'Nama Pemesan',
             'Kelas',
             'No HP',
             'Alamat',
             'Produk',
+            'Qty',
             'Total Harga',
             'Status Pembayaran',
             'Status Penerimaan',
+        ];
+    }
+
+    public function map($order): array
+    {
+        // Gabungkan semua produk + qty
+        $produk_list = [];
+        foreach ($order->items as $item) {
+            $produk_list[] = $item->product->nama_seragam . " ({$item->qty}x)";
+        }
+
+        return [
+            $order->created_at->locale('id')->translatedFormat('d/m/Y H:i'),
+            $order->nama_pemesan,
+            $order->kelas,
+            $order->no_hp,
+            $order->alamat,
+            implode(", ", $produk_list),
+            $order->items->sum('qty'),
+            "Rp " . number_format($order->total_harga, 0, ',', '.'),
+            $order->is_paid ? 'Lunas' : 'Belum',
+            $order->is_received ? 'Diterima' : 'Belum',
         ];
     }
 }
