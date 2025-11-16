@@ -33,6 +33,10 @@
             <input type="number" name="stok" value="{{ old('stok') }}" class="form-control" min="0" required>
         </div>
         <div class="mb-3">
+            <label>Catatan Kecil (Opsional)</label>
+            <textarea name="catatan_kecil" class="form-control" rows="2" placeholder="Contoh: stok real berbeda..."></textarea>
+        </div>
+        <div class="mb-3">
             <label>Gambar</label>
             <input type="file" name="gambar" class="form-control">
         </div>

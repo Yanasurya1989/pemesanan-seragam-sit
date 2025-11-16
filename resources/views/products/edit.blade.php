@@ -35,6 +35,10 @@
                 min="0" required>
         </div>
         <div class="mb-3">
+            <label>Catatan Kecil</label>
+            <textarea name="catatan_kecil" class="form-control" rows="2">{{ $product->catatan_kecil }}</textarea>
+        </div>
+        <div class="mb-3">
             <label>Gambar (biarkan kosong jika tidak ganti)</label><br>
             @if ($product->gambar)
                 <img src="{{ Storage::url($product->gambar) }}" width="100" class="mb-2"><br>

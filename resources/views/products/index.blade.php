@@ -11,6 +11,7 @@
                 <th>Size</th>
                 <th>Harga</th>
                 <th>Stok</th>
+                <th>Catatan</th>
                 <th>Gambar</th>
                 <th>Aksi</th>
             </tr>
@@ -26,6 +27,13 @@
                             <span class="badge bg-success">{{ $p->stok }}</span>
                         @else
                             <span class="badge bg-danger">Habis</span>
+                        @endif
+                    </td>
+                    <td>
+                        @if ($p->catatan_kecil)
+                            <small class="text-muted">{{ $p->catatan_kecil }}</small>
+                        @else
+                            <small>-</small>
                         @endif
                     </td>
                     <td>

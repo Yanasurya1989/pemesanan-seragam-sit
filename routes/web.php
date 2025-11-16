@@ -2,9 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\BarangMasukController;
 
 Route::get('/', [ProductController::class, 'frontend'])->name('frontend.products');
 
@@ -25,3 +26,4 @@ Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('ord
 
 // Route::get('/produk', [ProductController::class, 'frontend'])->name('frontend.products');
 Route::get('/orders/export', [OrderController::class, 'export'])->name('orders.export');
+Route::resource('barang-masuk', BarangMasukController::class);

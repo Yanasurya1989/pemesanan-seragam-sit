@@ -26,10 +26,13 @@ class ProductController extends Controller
             'size' => 'required|string|max:20',
             'harga' => 'required|numeric|min:0',
             'stok' => 'required|integer|min:0',
+            'catatan_kecil' => 'required|string|max:500',
             'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $data = $request->only(['nama_seragam', 'size', 'harga', 'stok']);
+        // $data = $request->only(['nama_seragam', 'size', 'harga', 'stok']);
+        $data = $request->only(['nama_seragam', 'size', 'harga', 'stok', 'catatan_kecil']);
+
 
         if ($request->hasFile('gambar')) {
             $path = $request->file('gambar')->store('products', 'public');
@@ -53,10 +56,11 @@ class ProductController extends Controller
             'size' => 'required|string|max:20',
             'harga' => 'required|numeric|min:0',
             'stok' => 'required|integer|min:0',
+            'catatan_kecil' => 'required|string|max:500',
             'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $data = $request->only(['nama_seragam', 'size', 'harga', 'stok']);
+        $data = $request->only(['nama_seragam', 'size', 'harga', 'stok', 'catatan_kecil']);
 
         if ($request->hasFile('gambar')) {
             if ($product->gambar && Storage::disk('public')->exists($product->gambar)) {
