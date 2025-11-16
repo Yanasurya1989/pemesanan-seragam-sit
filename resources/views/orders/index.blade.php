@@ -8,6 +8,33 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
+        <div class="card p-3 mb-4">
+            <form action="{{ route('orders.index') }}" method="GET" class="row g-3">
+
+                <div class="col-md-4">
+                    <label>Dari Tanggal</label>
+                    <input type="date" name="from" class="form-control" value="{{ request('from') }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Sampai Tanggal</label>
+                    <input type="date" name="to" class="form-control" value="{{ request('to') }}">
+                </div>
+
+                <div class="col-md-4 d-flex align-items-end gap-2">
+
+                    <button class="btn btn-primary w-100">🔍 Filter</button>
+
+                    <a href="{{ route('orders.index') }}" class="btn btn-secondary w-100">Reset</a>
+
+                    <a href="{{ route('orders.export', request()->only('from', 'to')) }}" class="btn btn-success w-100">
+                        📥 Export Excel
+                    </a>
+
+                </div>
+            </form>
+        </div>
+
         <div class="table-responsive">
             <table class="table table-bordered align-middle text-center">
                 <thead class="table-success">
@@ -72,47 +99,51 @@
                             </td>
 
                             {{-- Aksi --}}
-                            <td>
-                                {{-- Tombol toggle Lunas --}}
-                                <form action="{{ route('orders.togglePaid', $order->id) }}" method="POST"
-                                    class="d-inline">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button class="btn btn-sm {{ $order->is_paid ? 'btn-warning' : 'btn-success' }}">
-                                        {{ $order->is_paid ? 'Tandai Belum Lunas' : 'Tandai Lunas' }}
-                                    </button>
-                                </form>
+                            <td style="min-width: 150px;">
+                                <div class="d-grid gap-2">
 
-                                {{-- Tombol toggle Diterima --}}
-                                <form action="{{ route('orders.toggleReceived', $order->id) }}" method="POST"
-                                    class="d-inline mt-1">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button class="btn btn-sm {{ $order->is_received ? 'btn-danger' : 'btn-info' }}">
-                                        {{ $order->is_received ? 'Belum Diterima' : 'Sudah Diterima' }}
-                                    </button>
-                                </form>
+                                    {{-- Tombol toggle Lunas --}}
+                                    <form action="{{ route('orders.togglePaid', $order->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button
+                                            class="btn btn-sm {{ $order->is_paid ? 'btn-warning' : 'btn-success' }} w-100">
+                                            {{ $order->is_paid ? 'Tandai Belum Lunas' : 'Tandai Lunas' }}
+                                        </button>
+                                    </form>
 
-                                {{-- Tombol WhatsApp --}}
-                                @php
-                                    $nomor_wa = preg_replace('/^0/', '62', $order->no_hp);
-                                    $pesan = urlencode(
-                                        "Halo {$order->nama_pemesan}, pesanan seragam Anda sudah siap diambil di sekolah. Terima kasih 🙏",
-                                    );
-                                    $link_wa = "https://wa.me/{$nomor_wa}?text={$pesan}";
-                                @endphp
+                                    {{-- Tombol toggle Diterima --}}
+                                    <form action="{{ route('orders.toggleReceived', $order->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button
+                                            class="btn btn-sm {{ $order->is_received ? 'btn-danger' : 'btn-info' }} w-100">
+                                            {{ $order->is_received ? 'Belum Diterima' : 'Sudah Diterima' }}
+                                        </button>
+                                    </form>
 
-                                <a href="{{ $link_wa }}" target="_blank" class="btn btn-sm btn-success mt-1">
-                                    <i class="bi bi-whatsapp"></i> Chat
-                                </a>
+                                    {{-- Tombol WhatsApp --}}
+                                    @php
+                                        $nomor_wa = preg_replace('/^0/', '62', $order->no_hp);
+                                        $pesan = urlencode(
+                                            "Halo {$order->nama_pemesan}, pesanan seragam Anda sudah siap diambil di sekolah. Terima kasih 🙏",
+                                        );
+                                        $link_wa = "https://wa.me/{$nomor_wa}?text={$pesan}";
+                                    @endphp
 
-                                {{-- Tombol Hapus --}}
-                                <form action="{{ route('orders.destroy', $order->id) }}" method="POST" class="d-inline"
-                                    onsubmit="return confirm('Yakin ingin menghapus pesanan ini? Stok akan dikembalikan.');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger mt-1">🗑 Hapus</button>
-                                </form>
+                                    <a href="{{ $link_wa }}" target="_blank" class="btn btn-sm btn-success w-100">
+                                        <i class="bi bi-whatsapp"></i> Chat
+                                    </a>
+
+                                    {{-- Tombol Hapus --}}
+                                    <form action="{{ route('orders.destroy', $order->id) }}" method="POST"
+                                        onsubmit="return confirm('Yakin ingin menghapus pesanan ini? Stok akan dikembalikan.');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-outline-danger w-100">🗑 Hapus</button>
+                                    </form>
+
+                                </div>
                             </td>
                         </tr>
                     @endforeach

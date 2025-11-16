@@ -24,3 +24,4 @@ Route::patch('/orders/{order}/toggle-received', [OrderController::class, 'toggle
 Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
 // Route::get('/produk', [ProductController::class, 'frontend'])->name('frontend.products');
+Route::get('/orders/export', [OrderController::class, 'export'])->name('orders.export');
