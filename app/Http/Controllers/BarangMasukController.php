@@ -26,7 +26,7 @@ class BarangMasukController extends Controller
             'tanggal' => 'required|date',
             'nama_supplier' => 'required|string',
             'product_id' => 'required|exists:products,id',
-            'size' => 'required|string',
+            'size' => 'nullable|string',
             'qty' => 'required|integer|min:1',
             'harga_beli' => 'required|integer|min:0',
         ]);

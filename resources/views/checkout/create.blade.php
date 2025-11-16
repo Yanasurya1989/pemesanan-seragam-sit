@@ -54,10 +54,10 @@
                             <input type="text" name="no_hp" class="form-control" required>
                         </div>
 
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label>Alamat Pengiriman</label>
                             <textarea name="alamat" class="form-control" rows="2" required></textarea>
-                        </div>
+                        </div> --}}
 
                         <button type="submit" class="btn btn-success w-100">Pesan Sekarang</button>
                     </form>

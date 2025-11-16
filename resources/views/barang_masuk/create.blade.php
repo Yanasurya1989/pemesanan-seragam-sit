@@ -25,10 +25,10 @@
             </select>
         </div>
 
-        <div class="mb-2">
+        {{-- <div class="mb-2">
             <label>Size</label>
             <input type="text" name="size" class="form-control">
-        </div>
+        </div> --}}
 
         <div class="mb-2">
             <label>Qty</label>

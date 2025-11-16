@@ -21,7 +21,7 @@ class CheckoutController extends Controller
             'nama_pemesan' => 'required|string|max:255',
             'kelas' => 'required|string|max:100',
             'no_hp' => 'required|string|max:20',
-            'alamat' => 'required|string',
+            // 'alamat' => 'required|string',
             'product_id' => 'required|array',
             'qty' => 'required|array',
         ]);
@@ -30,7 +30,8 @@ class CheckoutController extends Controller
             'nama_pemesan' => $request->nama_pemesan,
             'kelas' => $request->kelas,
             'no_hp' => $request->no_hp,
-            'alamat' => $request->alamat,
+            // 'alamat' => $request->alamat,
+            'alamat' => $request->alamat ?? null,
             'total_harga' => 0,
             'is_paid' => false,
             'is_received' => false,

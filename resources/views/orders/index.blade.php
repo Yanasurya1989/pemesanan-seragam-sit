@@ -53,7 +53,7 @@
                         <th>Nama Pemesan</th>
                         <th>Kelas</th>
                         <th>No HP</th>
-                        <th>Alamat</th>
+                        {{-- <th>Alamat</th> --}}
                         <th>Produk</th>
                         <th>Total Harga</th>
                         <th>Status Pembayaran</th>
@@ -71,8 +71,7 @@
                             <td>{{ $order->nama_pemesan }}</td>
                             <td>{{ $order->kelas }}</td>
                             <td>{{ $order->no_hp }}</td>
-                            <td>{{ $order->alamat }}</td>
-
+                            {{-- <td>{{ $order->alamat }}</td> --}}
                             <td>
                                 @foreach ($order->items as $item)
                                     <div>
@@ -80,7 +79,6 @@
                                     </div>
                                 @endforeach
                             </td>
-
                             <td>Rp {{ number_format($order->total_harga, 0, ',', '.') }}</td>
 
                             {{-- Status Pembayaran --}}
