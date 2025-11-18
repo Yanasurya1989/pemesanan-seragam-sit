@@ -9,15 +9,11 @@ class BarangMasuk extends Model
     protected $fillable = [
         'tanggal',
         'nama_supplier',
-        'product_id',
-        'size',
-        'qty',
-        'harga_beli',
-        'total_bayar',
+        'total_transaksi',
     ];
 
-    public function product()
+    public function items()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(BarangMasukItem::class);
     }
 }

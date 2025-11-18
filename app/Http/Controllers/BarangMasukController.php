@@ -10,9 +10,10 @@ class BarangMasukController extends Controller
 {
     public function index()
     {
-        $data = BarangMasuk::with('product')->latest()->get();
+        $data = BarangMasuk::with('items.product')->get();
         return view('barang_masuk.index', compact('data'));
     }
+
 
     public function create()
     {
@@ -25,31 +26,48 @@ class BarangMasukController extends Controller
         $request->validate([
             'tanggal' => 'required|date',
             'nama_supplier' => 'required|string',
-            'product_id' => 'required|exists:products,id',
-            'size' => 'nullable|string',
-            'qty' => 'required|integer|min:1',
-            'harga_beli' => 'required|integer|min:0',
+            'items' => 'required|array',
         ]);
 
-        $total = $request->qty * $request->harga_beli;
+        $items = collect($request->items)
+            ->filter(fn($i) => isset($i['checked']) && $i['checked'] == 1);
 
-        // simpan transaksi barang masuk
-        BarangMasuk::create([
+        if ($items->isEmpty()) {
+            return back()->with('error', 'Pilih minimal satu barang.');
+        }
+
+        $total = 0;
+
+        $header = BarangMasuk::create([
             'tanggal' => $request->tanggal,
             'nama_supplier' => $request->nama_supplier,
-            'product_id' => $request->product_id,
-            'size' => $request->size,
-            'qty' => $request->qty,
-            'harga_beli' => $request->harga_beli,
-            'total_bayar' => $total,
+            'total_transaksi' => 0,
         ]);
 
-        // update stok produk
-        $product = Product::find($request->product_id);
-        $product->stok += $request->qty;
-        $product->save();
+        foreach ($request->items as $item) {
+
+            if (!isset($item['checked'])) {
+                continue;
+            }
+
+            $subtotal = $item['qty'] * $item['harga_beli'];
+            $total += $subtotal;
+
+            $header->items()->create([
+                'product_id' => $item['product_id'],
+                'qty' => $item['qty'],
+                'harga_beli' => $item['harga_beli'],
+                'subtotal' => $subtotal,
+            ]);
+
+            $product = Product::find($item['product_id']);
+            $product->stok += $item['qty'];
+            $product->save();
+        }
+
+        $header->update(['total_transaksi' => $total]);
 
         return redirect()->route('barang-masuk.index')
-            ->with('success', 'Barang masuk berhasil ditambahkan & stok bertambah!');
+            ->with('success', 'Barang masuk berhasil ditambahkan');
     }
 }

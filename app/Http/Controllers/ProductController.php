@@ -30,7 +30,7 @@ class ProductController extends Controller
             'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // $data = $request->only(['nama_seragam', 'size', 'harga', 'stok']);
+
         $data = $request->only(['nama_seragam', 'size', 'harga', 'stok', 'catatan_kecil']);
 
 

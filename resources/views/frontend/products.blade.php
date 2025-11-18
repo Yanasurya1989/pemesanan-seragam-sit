@@ -5,8 +5,8 @@
 
         {{-- Header --}}
         <div class="text-center mb-5">
-            <h1 class="fw-bold">🛍️ Katalog Seragam Sekolah</h1>
-            <p class="text-muted">Temukan berbagai jenis seragam dengan kualitas terbaik dan harga terjangkau.</p>
+            <h1 class="fw-bold">🛍️ Katalog Seragam SIT Qordova</h1>
+            <p class="text-muted">Temukan berbagai jenis seragam yang dibutuhkan.</p>
         </div>
 
         {{-- Search --}}

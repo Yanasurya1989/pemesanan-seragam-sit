@@ -5,20 +5,18 @@
         <h2 class="text-center mb-4">Checkout Seragam</h2>
 
         <div class="card shadow-sm border-0 overflow-hidden">
-            {{-- Versi Mobile: Gambar di atas --}}
             <div class="d-block d-md-none text-center bg-light p-3">
                 <img src="{{ Storage::url($product->gambar) }}" alt="{{ $product->nama_seragam }}"
                     class="img-fluid rounded shadow-sm" style="max-height: 250px; object-fit: cover;">
             </div>
 
             <div class="row g-0 align-items-center">
-                {{-- Gambar (Desktop only) --}}
                 <div class="col-md-5 d-none d-md-block bg-light text-center">
                     <img src="{{ Storage::url($product->gambar) }}" alt="{{ $product->nama_seragam }}"
                         class="img-fluid rounded-start" style="max-height: 100%; object-fit: cover;">
                 </div>
 
-                {{-- Form --}}
+
                 <div class="col-md-7 p-4">
                     <h4 class="mb-3">{{ $product->nama_seragam }}</h4>
                     <p class="mb-1">Ukuran: <strong>{{ $product->size }}</strong></p>

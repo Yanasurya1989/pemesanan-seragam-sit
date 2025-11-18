@@ -21,10 +21,7 @@ class Order extends Model
         'received_at',
     ];
 
-    /**
-     * Casting otomatis ke tipe data tertentu
-     * Carbon instance untuk tanggal, boolean untuk status.
-     */
+
     protected $casts = [
         'is_paid' => 'boolean',
         'is_received' => 'boolean',
@@ -32,9 +29,7 @@ class Order extends Model
         'received_at' => 'datetime',
     ];
 
-    /**
-     * Relasi ke item pesanan.
-     */
+
     public function items()
     {
         return $this->hasMany(OrderItem::class);

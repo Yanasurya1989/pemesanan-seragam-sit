@@ -117,6 +117,13 @@
                                             class="btn btn-sm {{ $order->is_paid ? 'btn-warning' : 'btn-success' }} w-100">
                                             {{ $order->is_paid ? 'Tandai Belum Lunas' : 'Tandai Lunas' }}
                                         </button>
+                                        @if ($order->is_paid)
+                                            <a href="{{ route('orders.kwitansi', $order->id) }}"
+                                                class="btn btn-sm btn-dark w-100" target="_blank">
+                                                🧾 Kwitansi
+                                            </a>
+                                        @endif
+
                                     </form>
 
                                     {{-- Toggle Diterima --}}

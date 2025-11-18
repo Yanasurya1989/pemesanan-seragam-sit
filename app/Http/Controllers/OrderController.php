@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Exports\OrderExport;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
@@ -62,5 +63,12 @@ class OrderController extends Controller
     public function export(Request $request)
     {
         return Excel::download(new OrderExport($request), 'orders.xlsx');
+    }
+
+    public function kwitansi(Order $order)
+    {
+        $pdf = Pdf::loadView('orders.kwitansi', compact('order'));
+        return $pdf->stream('kwitansi-' . $order->id . '.pdf');
+        // return $pdf->download('kwitansi-' . $order->id . '.pdf');
     }
 }

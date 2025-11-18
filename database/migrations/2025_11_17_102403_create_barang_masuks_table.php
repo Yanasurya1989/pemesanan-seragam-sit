@@ -12,20 +12,12 @@ return new class extends Migration
             $table->id();
             $table->date('tanggal');
             $table->string('nama_supplier');
-            $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            $table->string('size');
-            $table->integer('qty');
-            $table->integer('harga_beli');
-            $table->integer('total_bayar');
+            $table->decimal('total_transaksi', 12, 2)->default(0); // total dari detail
             $table->timestamps();
         });
     }
 
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('barang_masuks');
     }
