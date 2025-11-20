@@ -26,15 +26,14 @@
         <h5>💳 Silakan Transfer Pembayaran</h5>
         <p>Harap lakukan pembayaran ke salah satu rekening berikut:</p>
         <ul>
-            <li><b>Bank BSI:</b> 1234567890 a.n. Annisah Safitri</li>
-            <li><b>Bank Mandiri:</b> 9876543210 a.n. Annisa Safitri</li>
+            <li><b>Bank BSI:</b> 1234567890 a.n. YYS AIR UNIT USAHA SEKOLAH</li>
         </ul>
 
         <p>Atau gunakan <b>QRIS</b> berikut untuk pembayaran cepat:</p>
         <img src="{{ asset('images/qris.png') }}" alt="QRIS Pembayaran" width="200" class="mb-3">
 
         @php
-            $adminPhone = '6282218311045';
+            $adminPhone = '6281222469675';
 
             $waMessage =
                 "Halo Admin, saya ingin konfirmasi pesanan:\n\n" .

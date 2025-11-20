@@ -62,6 +62,15 @@
                                     🚫 Stok Habis
                                 </button>
                             @endif
+
+                            <form action="{{ route('cart.add') }}" method="POST" class="mt-2">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $p->id }}">
+                                <input type="hidden" name="qty" value="1">
+
+                                <button class="btn btn-success w-100">➕ Tambah ke Keranjang</button>
+                            </form>
+
                         </div>
                     </div>
                 </div>

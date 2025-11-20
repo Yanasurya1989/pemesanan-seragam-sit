@@ -82,4 +82,85 @@ class CheckoutController extends Controller
         $product = Product::findOrFail($product_id);
         return view('checkout.create', compact('product'));
     }
+
+    public function addToCart(Request $request)
+    {
+        // $request->validate([
+        //     'product_id' => 'required|integer',
+        //     'qty' => 'required|integer|min=1'
+        // ]);
+
+        $request->validate([
+            'product_id' => 'required|integer',
+            'qty' => 'required|integer|min:1'
+        ]);
+
+
+        $product = Product::findOrFail($request->product_id);
+
+        $cart = session()->get('cart', []);
+
+        // Jika produk sudah ada, tambahkan qty
+        if (isset($cart[$product->id])) {
+            $cart[$product->id]['qty'] += $request->qty;
+        } else {
+            $cart[$product->id] = [
+                'product_id' => $product->id,
+                'nama_seragam' => $product->nama_seragam,
+                'harga' => $product->harga,
+                'qty' => $request->qty,
+                'size' => $product->size,
+                'gambar' => $product->gambar,
+                'stok' => $product->stok
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        return back()->with('success', 'Produk ditambahkan ke keranjang!');
+    }
+
+    public function cart()
+    {
+        $cart = session()->get('cart', []);
+        return view('checkout.cart', compact('cart'));
+    }
+
+    public function updateCart(Request $request)
+    {
+        $cart = session()->get('cart', []);
+
+        foreach ($request->qty as $productId => $qty) {
+            if (isset($cart[$productId])) {
+                $cart[$productId]['qty'] = intval($qty);
+            }
+        }
+
+        session()->put('cart', $cart);
+
+        return back()->with('success', 'Keranjang diperbarui!');
+    }
+
+    public function checkoutCart(Request $request)
+    {
+        // Ubah data cart menjadi format yang sama seperti request checkout normal
+        $cart = session()->get('cart', []);
+
+        if (empty($cart)) {
+            return back()->with('error', 'Keranjang masih kosong!');
+        }
+
+        $request->merge([
+            'product_id' => array_column($cart, 'product_id'),
+            'qty'        => array_column($cart, 'qty')
+        ]);
+
+        // Gunakan method store() yang sudah ada
+        $response = $this->store($request);
+
+        // Hapus cart jika sudah checkout
+        session()->forget('cart');
+
+        return $response;
+    }
 }

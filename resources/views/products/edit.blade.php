@@ -26,8 +26,13 @@
             <input type="text" name="size" value="{{ old('size', $product->size) }}" class="form-control" required>
         </div>
         <div class="mb-3">
-            <label>Harga</label>
+            <label>Harga Jual</label>
             <input type="number" name="harga" value="{{ old('harga', $product->harga) }}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Harga Beli</label>
+            <input type="number" name="harga_beli" value="{{ old('harga_beli', $product->harga_beli) }}"
+                class="form-control" required>
         </div>
         <div class="mb-3">
             <label>Stok</label>

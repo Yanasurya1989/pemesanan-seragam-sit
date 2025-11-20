@@ -17,9 +17,15 @@ Route::get('/checkout/create/{product_id}', [CheckoutController::class, 'create'
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 Route::get('/checkout/success/{order}', [CheckoutController::class, 'success'])->name('checkout.success');
 
+// CART ROUTES
+Route::get('/cart', [CheckoutController::class, 'cart'])->name('cart.index');
+Route::post('/cart/add', [CheckoutController::class, 'addToCart'])->name('cart.add');
+Route::post('/cart/update', [CheckoutController::class, 'updateCart'])->name('cart.update');
+Route::post('/cart/checkout', [CheckoutController::class, 'checkoutCart'])->name('cart.checkout');
+
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 Route::middleware(['auth'])->group(function () {
@@ -41,4 +47,6 @@ Route::middleware(['auth'])->group(function () {
         $pdf = Pdf::loadHTML('<h1>Halo PDF!</h1>');
         return $pdf->stream();
     });
+
+    Route::post('/products/import', [ProductController::class, 'import'])->name('products.import');
 });
