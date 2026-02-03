@@ -114,32 +114,37 @@ class ProductController extends Controller
 
         $rows = $data[0];
 
+        $inserted = 0;
+        $skipped = 0;
+
         foreach ($rows as $index => $row) {
-            if ($index == 0) continue; // skip header
+            if ($index == 0) continue; // Skip header
             if (!isset($row[0])) continue;
 
             // Ambil nilai
-            $nama = $row[0] ?? '';
-            $size = $row[1] ?? '';
-            $harga = is_numeric($row[2]) ? $row[2] : 0;
-            $harga_beli = is_numeric($row[3]) ? $row[3] : 0;
+            $nama         = $row[0] ?? '';
+            $size         = $row[1] ?? '';
+            $harga        = is_numeric($row[2]) ? $row[2] : 0;
+            $harga_beli   = is_numeric($row[3]) ? $row[3] : 0;
 
-            $stokRaw = $row[4] ?? 0;
-            $stok = is_numeric($stokRaw) ? (int)$stokRaw : 0;
+            $stokRaw      = $row[4] ?? 0;
+            $stok         = is_numeric($stokRaw) ? (int)$stokRaw : 0;
 
-            $catatan = $row[5] ?? null;
+            $catatan      = $row[5] ?? null;
+            $gambarNama   = trim($row[6] ?? '');
 
-            // Nama file gambar dari Excel
-            $gambarNama = trim($row[6] ?? '');
+            // ====== CEK APAKAH PRODUK SUDAH ADA ======
+            $existing = Product::where('nama_seragam', $nama)
+                ->where('size', $size)
+                ->first();
 
-            // Default null
+            if ($existing) {
+                $skipped++;
+                continue; // SKIP → tidak insert duplikat
+            }
+
+            // ====== HANDLE GAMBAR ======
             $gambarPath = null;
-
-            // ============================================
-            // CEK GAMBAR DI DUA LOKASI:
-            // storage/app/public/products/
-            // public/products/
-            // ============================================
             if ($gambarNama !== '') {
 
                 // Lokasi di storage
@@ -149,15 +154,13 @@ class ProductController extends Controller
                 $pathPublic = public_path('products/' . $gambarNama);
 
                 if (Storage::disk('public')->exists($pathStorage)) {
-                    // File ditemukan di storage
                     $gambarPath = $pathStorage;
                 } elseif (file_exists($pathPublic)) {
-                    // File ditemukan di public
                     $gambarPath = 'products/' . $gambarNama;
                 }
             }
 
-            // SIMPAN DATABASE
+            // ====== INSERT DATA BARU ======
             Product::create([
                 'nama_seragam'  => $nama,
                 'size'          => $size,
@@ -167,8 +170,15 @@ class ProductController extends Controller
                 'catatan_kecil' => $catatan,
                 'gambar'        => $gambarPath,
             ]);
+
+            $inserted++;
         }
 
-        return back()->with('success', 'Import berhasil!');
+        return back()->with(
+            'success',
+            "Import selesai!  
+        - Data masuk: $inserted  
+        - Data duplikat dilewati: $skipped"
+        );
     }
 }

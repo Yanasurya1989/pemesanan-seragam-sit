@@ -26,7 +26,7 @@
         <h5>💳 Silakan Transfer Pembayaran</h5>
         <p>Harap lakukan pembayaran ke salah satu rekening berikut:</p>
         <ul>
-            <li><b>Bank BSI:</b> 1234567890 a.n. YYS AIR UNIT USAHA SEKOLAH</li>
+            <li><b>Bank BSI:</b> 7030365962 a.n. YYS AIR UNIT USAHA SEKOLAH</li>
         </ul>
 
         <p>Atau gunakan <b>QRIS</b> berikut untuk pembayaran cepat:</p>

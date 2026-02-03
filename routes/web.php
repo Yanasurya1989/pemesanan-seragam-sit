@@ -23,12 +23,19 @@ Route::post('/cart/add', [CheckoutController::class, 'addToCart'])->name('cart.a
 Route::post('/cart/update', [CheckoutController::class, 'updateCart'])->name('cart.update');
 Route::post('/cart/checkout', [CheckoutController::class, 'checkoutCart'])->name('cart.checkout');
 
+
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 Route::middleware(['auth'])->group(function () {
+
+    // dashboard admin
+    Route::get('/admin', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+
     // CRUD produk
     Route::resource('products', ProductController::class);
 
