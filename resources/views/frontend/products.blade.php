@@ -23,7 +23,7 @@
 
         {{-- Header --}}
         <div class="text-center mb-5">b
-            <h1 class="fw-bold">🛍️ Katalog Seragam SIT Qordovab - Test satu dua tiga</h1>
+            <h1 class="fw-bold">🛍️ Katalog Seragam SIT Qordovab</h1>
             <p class="text-muted">Temukan berbagai jenis seragam yang dibutuhkan.</p>
         </div>
 
